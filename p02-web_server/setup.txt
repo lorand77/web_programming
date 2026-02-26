@@ -1,0 +1,6 @@
+sudo apt update
+sudo apt install nginx
+
+sudo service nginx start
+sudo service nginx status
+sudo service nginx stop
