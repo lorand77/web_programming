@@ -1,6 +1,41 @@
 sudo apt update
 sudo apt install nginx
 
+
+sudo systemctl status nginx
+● nginx.service - A high performance web server and a reverse proxy server
+     Loaded: loaded (/usr/lib/systemd/system/nginx.service; enabled; preset: enabled)
+     Active: active (running) since Fri 2026-02-27 15:31:58 UTC; 2min 15s ago
+
+ps aux |  grep nginx
+root        2381  0.0  0.0  11208  7112 ?        S    15:31   0:00 nginx: master process /usr/sbin/nginx -g daemon on; master_process on;
+www-data    2384  0.0  0.0  12896  4628 ?        S    15:31   0:00 nginx: worker process
+www-data    2385  0.0  0.0  12896  4628 ?        S    15:31   0:00 nginx: worker process
+www-data    2386  0.0  0.0  12896  4628 ?        S    15:31   0:00 nginx: worker process
+www-data    2387  0.0  0.0  12896  4500 ?        S    15:31   0:00 nginx: worker process
+
+sudo systemctl stop nginx
+sudo systemctl start nginx
+
+sudo systemctl disable nginx
+sudo systemctl enable nginx
+
+
 sudo service nginx start
 sudo service nginx status
 sudo service nginx stop
+
+
+scp -i ~/.ssh/XXX.pem test1.html clint_eatwood.jpg ubuntu@XXX:
+
+sudo mv test1.html /var/www/html/
+sudo mv clint_eatwood.jpg /var/www/html/
+
+in browser: http://XXX/test1.html
+
+
+
+ll /var/www/html/
+sudo cp /workspaces/web_programming/p01-html/* /var/www/html/
+
+in browser: http://localhost/test1.html
