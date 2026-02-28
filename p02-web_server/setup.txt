@@ -26,12 +26,169 @@ sudo service nginx status
 sudo service nginx stop
 
 
+
+
 scp -i ~/.ssh/XXX.pem test1.html clint_eatwood.jpg ubuntu@XXX:
 
 sudo mv test1.html /var/www/html/
 sudo mv clint_eatwood.jpg /var/www/html/
 
 in browser: http://XXX/test1.html
+
+
+
+
+wget http://34.222.176.157/test1.html
+wget -d http://34.222.176.157/test1.html
+wget -r http://34.222.176.157/test1.html
+
+curl http://34.222.176.157/test1.html
+curl -v http://34.222.176.157/test1.html
+curl -v http://34.222.176.157/clint_eatwood.jpg
+curl -v -o - http://34.222.176.157/clint_eatwood.jpg
+curl -v -o clint_eatwood.jpg http://34.222.176.157/clint_eatwood.jpg
+
+curl -v http://34.222.176.157/test1.html
+*   Trying 34.222.176.157:80...
+* Connected to 34.222.176.157 (34.222.176.157) port 80
+> GET /test1.html HTTP/1.1
+> Host: 34.222.176.157
+> User-Agent: curl/8.5.0
+> Accept: */*
+>
+< HTTP/1.1 200 OK
+< Server: nginx/1.24.0 (Ubuntu)
+< Date: Sat, 28 Feb 2026 09:28:08 GMT
+< Content-Type: text/html
+< Content-Length: 988
+< Last-Modified: Fri, 27 Feb 2026 15:51:43 GMT
+< Connection: keep-alive
+< ETag: "69a1bd8f-3dc"
+< Accept-Ranges: bytes
+<
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hello!</title>
+
+
+
+
+/etc/nginx/nginx.conf
+  error_log /var/log/nginx/error.log;
+  access_log /var/log/nginx/access.log;
+/etc/nginx/sites-available/default
+    listen 80 default_server;
+    listen [::]:80 default_server;
+     root /var/www/html;
+
+
+ ll /var/www/html/
+
+
+
+
+/var/log/nginx/access.log
+XX.XX.XX.XX - - [28/Feb/2026:09:18:08 +0000] "GET /test1.html HTTP/1.1" 200 361 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+XX.XX.XX.XX - - [28/Feb/2026:09:18:08 +0000] "GET /clint_eatwood.jpg HTTP/1.1" 200 25446 "http://34.222.176.157/test1.html" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+XX.XX.XX.XX - - [28/Feb/2026:09:18:09 +0000] "GET /favicon.ico HTTP/1.1" 404 196 "http://34.222.176.157/test1.html" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+
+curl -A "bullshit browser" http://34.222.176.157/test1.html
+XX.XX.XX.XX - - [28/Feb/2026:09:22:40 +0000] "GET /test1.html HTTP/1.1" 200 988 "-" "bullshit browser"
+
+curl -v http://34.222.176.157/test2.html
+*   Trying 34.222.176.157:80...
+* Connected to 34.222.176.157 (34.222.176.157) port 80
+> GET /test2.html HTTP/1.1
+> Host: 34.222.176.157
+> User-Agent: curl/8.5.0
+> Accept: */*
+>
+
+< HTTP/1.1 404 Not Found
+< Server: nginx/1.24.0 (Ubuntu)
+< Date: Sat, 28 Feb 2026 09:25:05 GMT
+< Content-Type: text/html
+< Content-Length: 162
+< Connection: keep-alive
+<
+<html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx/1.24.0 (Ubuntu)</center>
+</body>
+</html>
+XX.XX.XX.XX - - [28/Feb/2026:09:25:05 +0000] "GET /test2.html HTTP/1.1" 404 162 "-" "curl/8.5.0"
+
+
+
+sudo apt install wrk
+
+
+wrk -t1 -c1 -d10 http://34.222.176.157/test1.html
+Running 10s test @ http://34.222.176.157/test1.html
+  1 threads and 1 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   252.92ms   49.33ms 313.21ms   50.00%
+    Req/Sec     3.82      1.09     5.00     55.26%
+  38 requests in 10.02s, 45.83KB read
+Requests/sec:      3.79
+Transfer/sec:      4.58KB
+
+wrk -t1 -c10 -d10 http://34.222.176.157/test1.html
+Running 10s test @ http://34.222.176.157/test1.html
+  1 threads and 10 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   199.46ms    3.07ms 220.52ms   77.50%
+    Req/Sec    49.66     22.41   101.00     70.42%
+  480 requests in 10.01s, 578.91KB read
+Requests/sec:     47.95
+Transfer/sec:     57.83KB
+
+wrk -t1 -c100 -d10 http://34.222.176.157/test1.html
+Running 10s test @ http://34.222.176.157/test1.html
+  1 threads and 100 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   211.72ms   69.86ms 978.99ms   98.11%
+    Req/Sec   464.21    208.17   838.00     60.00%
+  4424 requests in 10.03s, 5.21MB read
+Requests/sec:    440.93
+Transfer/sec:    531.78KB
+
+wrk -t1 -c1000 -d10 http://34.222.176.157/test1.html
+Running 10s test @ http://34.222.176.157/test1.html
+  1 threads and 1000 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   243.98ms  112.82ms 994.68ms   94.86%
+    Req/Sec     3.99k     1.32k    7.23k    72.83%
+  37170 requests in 10.08s, 43.78MB read
+  Socket errors: connect 0, read 0, write 0, timeout 151
+Requests/sec:   3686.88
+Transfer/sec:      4.34MB
+
+wrk -t1 -c10000 -d10 http://34.222.176.157/test1.html
+Running 10s test @ http://34.222.176.157/test1.html
+  1 threads and 10000 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   781.24ms  254.23ms   2.00s    92.63%
+    Req/Sec     3.43k     1.82k    7.03k    66.32%
+  32467 requests in 10.12s, 38.24MB read
+  Socket errors: connect 0, read 20829, write 0, timeout 4583
+Requests/sec:   3208.36
+Transfer/sec:      3.78MB
+
+wrk -t1 -c100000 -d10 http://34.222.176.157/test1.html
+Running 10s test @ http://34.222.176.157/test1.html
+  1 threads and 100000 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   704.79ms  165.61ms   1.98s    81.27%
+    Req/Sec     3.72k     1.39k    6.37k    70.89%
+  29331 requests in 10.15s, 34.55MB read
+  Socket errors: connect 89764, read 20860, write 0, timeout 2693
+Requests/sec:   2889.80
+Transfer/sec:      3.40MB
+
 
 
 
