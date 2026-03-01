@@ -196,3 +196,6 @@ ll /var/www/html/
 sudo cp /workspaces/web_programming/p01-html/* /var/www/html/
 
 in browser: http://localhost/test1.html
+
+
+python3 -m http.server --directory /var/www/html/ 80
