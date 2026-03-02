@@ -199,3 +199,6 @@ in browser: http://localhost/test1.html
 
 
 python3 -m http.server --directory /var/www/html/ 80
+
+
+http://localhost/test_folder/test2.html
