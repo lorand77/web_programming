@@ -1,0 +1,48 @@
+curl "https://api.open-meteo.com/v1/forecast?latitude=29.76328&longitude=-95.36327&current=temperature_2m"
+
+https://
+api.open-meteo.com
+/v1/forecast
+?
+latitude=29.76328   &     longitude=-95.36327     &     current=temperature_2m
+
+
+{"latitude":29.767237,"longitude":-95.35445,"generationtime_ms":0.021576881408691406,"utc_offset_seconds":0,"timezone":"GMT","timezone_abbreviation":"GMT","elevation":14.0,"current_units":{"time":"iso8601","interval":"seconds","temperature_2m":"°C"},"current":{"time":"2026-03-09T18:00","interval":900,"temperature_2m":25.3}}
+
+{
+  "latitude": 29.767237,
+  "longitude": -95.35445,
+  "generationtime_ms": 0.0215,
+  "utc_offset_seconds": 0,
+  "timezone": "GMT",
+  "timezone_abbreviation": "GMT",
+  "elevation": 14.0,
+  "current_units": {
+    "time": "iso8601",
+    "interval": "seconds",
+    "temperature_2m": "°C"
+  },
+  "current": {
+    "time": "2026-03-09T18:00",
+    "interval": 900,
+    "temperature_2m": 25.3
+  }
+}
+
+
+curl -v "https://api.open-meteo.com/v1/forecast?latitude=29.76328&longitude=-95.36327&current=temperature_2m"
+
+> GET /v1/forecast?latitude=29.76328&longitude=-95.36327&current=temperature_2m HTTP/1.1
+> Host: api.open-meteo.com
+> User-Agent: curl/8.5.0
+> Accept: */*
+>
+
+
+< HTTP/1.1 200 OK
+< Date: Mon, 09 Mar 2026 18:07:41 GMT
+< Content-Type: application/json; charset=utf-8
+< Transfer-Encoding: chunked
+< Connection: keep-alive
+<
+
