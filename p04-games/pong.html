@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pro Pong - Bug Fixed</title>
+    <style>
+        body { 
+            background: #1a1a1a; 
+            display: flex; 
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+            color: white;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        canvas { 
+            border: 5px solid #fff; 
+            background: #000; 
+            box-shadow: 0 0 20px rgba(255,255,255,0.1);
+            cursor: none; /* Hides cursor over the game */
+        }
+        .ui { margin-bottom: 10px; text-align: center; }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background: #fff;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        button:hover { background: #ccc; }
+    </style>
+</head>
+<body>
+
+    <div class="ui">
+        <h1>PONG</h1>
+        <button id="startBtn">Start Game</button>
+    </div>
+    <canvas id="pong" width="800" height="400"></canvas>
+
+    <script>
+        const canvas = document.getElementById("pong");
+        const ctx = canvas.getContext("2d");
+        const startBtn = document.getElementById("startBtn");
+
+        let gameRunning = false;
+
+        // Game Constants
+        const INITIAL_BALL_SPEED = 5;
+        const MAX_BALL_SPEED = 15;
+
+        const ball = {
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+            radius: 10,
+            velocityX: INITIAL_BALL_SPEED,
+            velocityY: INITIAL_BALL_SPEED,
+            speed: INITIAL_BALL_SPEED
+        };
+
+        const user = {
+            x: 0,
+            y: (canvas.height - 100) / 2,
+            width: 10,
+            height: 100,
+            score: 0,
+            color: "WHITE"
+        };
+
+        const com = {
+            x: canvas.width - 10,
+            y: (canvas.height - 100) / 2,
+            width: 10,
+            height: 100,
+            score: 0,
+            color: "WHITE"
+        };
+
+        // 1. FIXED: Paddle bounds - prevents paddle from leaving the screen
+        canvas.addEventListener("mousemove", (evt) => {
+            if(!gameRunning) return;
+            let rect = canvas.getBoundingClientRect();
+            let mouseY = evt.clientY - rect.top - user.height / 2;
+            
+            if (mouseY < 0) user.y = 0;
+            else if (mouseY > canvas.height - user.height) user.y = canvas.height - user.height;
+            else user.y = mouseY;
+        });
+
+        startBtn.addEventListener("click", () => {
+            gameRunning = true;
+            startBtn.style.display = "none";
+            resetBall();
+        });
+
+        function drawRect(x, y, w, h, color) {
+            ctx.fillStyle = color;
+            ctx.fillRect(x, y, w, h);
+        }
+
+        function drawCircle(x, y, r, color) {
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.arc(x, y, r, 0, Math.PI * 2, false);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        function drawText(text, x, y) {
+            ctx.fillStyle = "#FFF";
+            ctx.font = "45px Arial";
+            ctx.fillText(text, x, y);
+        }
+
+        // 2. FIXED: Directional Reset - serves to the person who just lost
+        function resetBall() {
+            ball.speed = INITIAL_BALL_SPEED;
+            ball.velocityX = (ball.velocityX > 0) ? -INITIAL_BALL_SPEED : INITIAL_BALL_SPEED;
+            ball.velocityY = INITIAL_BALL_SPEED * (Math.random() > 0.5 ? 1 : -1);
+            ball.x = canvas.width / 2;
+            ball.y = canvas.height / 2;
+        }
+
+        function collision(b, p) {
+            p.top = p.y;
+            p.bottom = p.y + p.height;
+            p.left = p.x;
+            p.right = p.x + p.width;
+
+            b.top = b.y - b.radius;
+            b.bottom = b.y + b.radius;
+            b.left = b.x - b.radius;
+            b.right = b.x + b.radius;
+
+            return b.right > p.left && b.bottom > p.top && b.left < p.right && b.top < p.bottom;
+        }
+
+        function update() {
+            if(!gameRunning) return;
+
+            // Move the ball
+            ball.x += ball.velocityX;
+            ball.y += ball.velocityY;
+
+            // 3. FIXED: AI Lag - Makes it beatable but smooth
+            let computerLevel = 0.1;
+            com.y += (ball.y - (com.y + com.height / 2)) * computerLevel;
+
+            // Wall bounce
+            if (ball.y - ball.radius < 0 || ball.y + ball.radius > canvas.height) {
+                ball.velocityY = -ball.velocityY;
+            }
+
+            // Determine paddle hit
+            let player = (ball.x < canvas.width / 2) ? user : com;
+
+            if (collision(ball, player)) {
+                // 4. FIXED: "Sticky Paddle" - Ensure ball is outside paddle after hit
+                ball.x = (player === user) ? user.width + ball.radius : com.x - ball.radius;
+
+                // 5. FIXED: "Angle Logic" - Ball direction depends on where it hits the paddle
+                let collidePoint = (ball.y - (player.y + player.height / 2));
+                collidePoint = collidePoint / (player.height / 2);
+
+                let angleRad = (Math.PI / 4) * collidePoint;
+                let direction = (ball.x < canvas.width / 2) ? 1 : -1;
+
+                // 6. FIXED: Speed Cap - Stops ball from hitting infinite speed
+                if (ball.speed < MAX_BALL_SPEED) ball.speed += 0.5;
+
+                ball.velocityX = direction * ball.speed * Math.cos(angleRad);
+                ball.velocityY = ball.speed * Math.sin(angleRad);
+            }
+
+            // Score points
+            if (ball.x - ball.radius < 0) {
+                com.score++;
+                resetBall();
+            } else if (ball.x + ball.radius > canvas.width) {
+                user.score++;
+                resetBall();
+            }
+        }
+
+        function render() {
+            drawRect(0, 0, canvas.width, canvas.height, "#000"); // Clear
+            
+            // Draw Net
+            for (let i = 0; i <= canvas.height; i += 40) {
+                drawRect(canvas.width / 2 - 1, i, 2, 20, "#FFFFFF33");
+            }
+
+            drawText(user.score, canvas.width / 4, canvas.height / 5);
+            drawText(com.score, 3 * canvas.width / 4, canvas.height / 5);
+            
+            drawRect(user.x, user.y, user.width, user.height, user.color);
+            drawRect(com.x, com.y, com.width, com.height, com.color);
+            drawCircle(ball.x, ball.y, ball.radius, "#FFF");
+        }
+
+        function gameLoop() {
+            update();
+            render();
+        }
+
+        setInterval(gameLoop, 1000 / 60);
+    </script>
+</body>
+</html>
