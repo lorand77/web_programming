@@ -7,8 +7,6 @@ const z = 20;
 // z = 20; // This would cause an error since z is a constant
 
 
-
 let output = y + z;
 
-document.getElementById('output').innerText = output; 
 console.log(output);
