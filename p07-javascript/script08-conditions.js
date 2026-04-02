@@ -61,8 +61,8 @@ if (f(x) > 1 && f(y) > 0) {
     console.log("Test");
 }
 
-z1 = f(x) > 1;
-z2 = f(y) > 0;
+let z1 = f(x) > 1;
+let z2 = f(y) > 0;
 
 if (z1 && z2) {
     console.log("Test2");
