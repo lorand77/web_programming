@@ -35,3 +35,36 @@ let age = 25;
 
 let canDrink = (age >= 21) ? "Yes" : "No";
 console.log(`Can drink alcohol? ${canDrink}`);
+
+let y = 7;
+
+console.log(y === 8);
+
+if (x > 0 && y > 0) {
+    console.log("Both x and y are positive");
+}
+
+if (x === 0 || y === 0) {
+    console.log("At least one of x or y is zero");
+}
+
+if (x !== 0) {
+    console.log("x is not zero");
+}
+
+function f(x) {
+    console.log(x);
+    return x;
+}
+
+if (f(x) > 1 && f(y) > 0) {
+    console.log("Test");
+}
+
+z1 = f(x) > 1;
+z2 = f(y) > 0;
+
+if (z1 && z2) {
+    console.log("Test2");
+}
+
