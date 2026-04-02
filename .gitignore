@@ -59,3 +59,8 @@ coverage/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Local project files to ignore
+eslint.config.mjs
+package-lock.json
+package.json
