@@ -50,3 +50,41 @@ while (idx < str.length+1) {
   }
   idx++;
 }
+
+let fruits = "Apple, Banana, Kiwi";
+let part = fruits.slice(7, 13);
+console.log(part);
+
+text1 = "Hello World!";
+text2 = text1.toUpperCase();
+console.log(text2);
+
+text1 = "Hello World!";
+text2 = text1.toLowerCase();
+console.log(text2);
+
+text1 = "      Hello World!      ";
+text2 = text1.trim();
+console.log(text2);
+
+text = "Hello";
+let padded = text.padStart(10," ");
+console.log(padded);
+
+text = "Hello world! ";
+let result = text.repeat(4);
+console.log(result);
+
+text = "Please visit Microsoft and Microsoft!";
+let newText = text.replace("Microsoft", "Micro$oft");
+console.log(newText);
+
+newText = text.replace(/Microsoft/g, "Micro$oft");
+console.log(newText);
+
+console.log(text.split(" "));
+console.log(text.split("i"));
+
+text = "Please locate where 'locate' occurs!";
+let index = text.indexOf("locate");
+console.log(index);
