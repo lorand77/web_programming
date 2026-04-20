@@ -14,10 +14,18 @@ const x = document.getElementById("main");
 const y = x.getElementsByTagName("p");
 
 document.getElementById("output").textContent = y[0].textContent;
-setTimeout(() => {
-	document.getElementById("output").textContent = x.children[1].textContent;
-}, 2000);
+// document.getElementById("output").textContent = x.children[1].textContent;
 
+console.log(y);
+console.log(y[0]);
+console.log(y[0].textContent);
+
+console.log(x);
+console.log(x.children);
+console.log(x.children[0].textContent);
+
+document.getElementById("output").style.color = "red";
+document.getElementById("output").style.fontSize = "30px";
 
 </script>
 
