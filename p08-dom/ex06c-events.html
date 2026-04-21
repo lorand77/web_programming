@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<button id="myBtn">Moar text!</button>
+
+<p id="moarText">moar</p>
+
+<script>
+const btn = document.getElementById("myBtn");
+
+btn.addEventListener("click", function () {
+  document.getElementById("moarText").textContent = document.getElementById("moarText").textContent + " moar";
+});
+
+btn.addEventListener("dblclick", function () {
+  document.getElementById("moarText").textContent = document.getElementById("moarText").textContent + " " + document.getElementById("moarText").textContent;
+});
+</script>
+
+</body>
+</html>

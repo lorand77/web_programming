@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<p id="text">Hello, this text changes color!</p>
+
+<script>
+  let isRed = false;
+  setInterval(() => {
+    isRed = !isRed;
+    document.getElementById("text").style.color = isRed ? "red" : "black";
+  }, 1000);
+</script>
+
+</body>
+</html>

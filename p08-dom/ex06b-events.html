@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h1>JavaScript Events</h1>
+<h2>The addEventListener() Method</h2>
+
+<button id="myBtn">Time is?</button>
+
+<p id="demo"></p>
+
+<script>
+const btn = document.getElementById("myBtn");
+
+// Add EventListener to btn
+btn.addEventListener("click", function () {
+  document.getElementById("demo").innerHTML = Date();
+});
+</script>
+
+</body>
+</html>
