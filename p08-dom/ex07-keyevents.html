@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<p id="demo"></p>
+
+<script>
+const k = document.getElementById("k");
+
+
+window.addEventListener("keydown", function (event) {
+  document.getElementById("demo").innerHTML = "You pressed: " + event.key;
+  console.log(event.key, event.code);
+});
+
+</script>
+
+</body>
+</html>

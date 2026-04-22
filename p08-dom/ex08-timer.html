@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h1>JavaScript Events</h1>
+<h2>The setInterval() Method</h2>
+
+<p id="clock"></p>
+
+<script>
+function hello() {
+  alert("Hello, World!");
+}
+
+// Call showTime every 1000 millisec
+setInterval(showTime, 100);
+setTimeout(hello, 2000);
+setTimeout(() => alert("Time's up!"), 4000);
+
+// Function to display the time
+function showTime() {
+  const d = new Date();
+  document.getElementById("clock").innerHTML =
+  d.getHours() + ":" + d.getMinutes() + ":" + 
+  (d.getSeconds() > 9 ? d.getSeconds() : "0" + d.getSeconds());
+}
+</script>
+</body>
+</html>

@@ -8,9 +8,10 @@
 
 <script>
 // Let document listen for mousemove
-document.addEventListener("mousemove", function (event) {
+window.addEventListener("mousemove", function (event) {
   document.getElementById("demo").innerHTML =
   "X: " + event.clientX + " Y: " + event.clientY;
+  console.log(event);
 });
 </script>
 
