@@ -3,15 +3,24 @@
 <body>
 
 <p id="demo"></p>
+<p id="demo2"></p>
 
 <script>
-const k = document.getElementById("k");
-
 
 window.addEventListener("keydown", function (event) {
+  event.preventDefault();
   document.getElementById("demo").innerHTML = "You pressed: " + event.key;
   console.log(event.key, event.code);
 });
+
+const fun2 = (event) => {
+  document.getElementById("demo2").innerHTML = "You pressed: " + event.key;
+  console.log(event.key, event.code);
+};
+
+window.addEventListener("keydown", fun2);
+window.removeEventListener("keydown", fun2);
+
 
 </script>
 
