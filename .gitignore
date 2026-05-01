@@ -64,3 +64,4 @@ Thumbs.db
 eslint.config.mjs
 package-lock.json
 package.json
+!p10-npm/package.json
