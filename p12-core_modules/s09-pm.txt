@@ -1,0 +1,10 @@
+sudo npm install -g pm2
+
+pm2 start s02-http.js
+
+pm2 list
+pm2 log
+
+pm2 stop s02-http
+pm2 start s02-http
+pm2 restart s02-http
