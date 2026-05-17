@@ -1,8 +1,23 @@
 const counter = document.getElementById('counter');
 
-const render = ({ count }) => (counter.textContent = count);
-const send = (path) => fetch(path, { method: 'POST' }).then(r => r.json()).then(render);
+function render(data) {
+  counter.textContent = data.count;
+}
 
-fetch('/count').then(r => r.json()).then(render);
-document.getElementById('plus').addEventListener('click', () => send('/plus'));
-document.getElementById('minus').addEventListener('click', () => send('/minus'));
+function send(path) {
+  fetch(path, { method: 'POST' })
+    .then(function (r) { return r.json(); })
+    .then(render);
+}
+
+fetch('/count')
+  .then(function (r) { return r.json(); })
+  .then(render);
+
+document.getElementById('plus').addEventListener('click', function () {
+  send('/plus');
+});
+
+document.getElementById('minus').addEventListener('click', function () {
+  send('/minus');
+});
