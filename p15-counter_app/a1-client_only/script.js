@@ -1,5 +1,7 @@
 const counter = document.getElementById('counter');
+
 let count = 0;
+counter.textContent = count;
 
 document.getElementById('plus').addEventListener('click', () => {
   count++;
