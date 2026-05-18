@@ -17,7 +17,7 @@ function poll() {
 }
 
 poll();
-setInterval(poll, 200);
+setInterval(poll, 500);
 
 document.getElementById('plus').addEventListener('click', function () {
   send('/plus');

@@ -1,0 +1,9 @@
+pm2 start server.js --watch
+
+// curl -N localhost:8080/stream
+// data: {"count":0}
+//
+// data: {"count":1}
+
+// curl -X POST localhost:8080/plus
+// {"count":1}
