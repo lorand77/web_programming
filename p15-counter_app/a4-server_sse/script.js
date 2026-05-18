@@ -8,9 +8,11 @@ stream.onmessage = function (e) {
 
 
 document.getElementById('plus').addEventListener('click', function () {
+  counter.textContent = parseInt(counter.textContent) + 1;
   fetch('/plus', { method: 'POST' });
 });
 
 document.getElementById('minus').addEventListener('click', function () {
+  counter.textContent = parseInt(counter.textContent) - 1;
   fetch('/minus', { method: 'POST' });
 });
