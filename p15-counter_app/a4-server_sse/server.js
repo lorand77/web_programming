@@ -31,13 +31,13 @@ function broadcast() {
 app.post('/plus', (req, res) => {
     count++;
     broadcast();
-    res.send();
+    res.sendStatus(204);
 });
 
 app.post('/minus', (req, res) => {
     count--;
     broadcast();
-    res.send();
+    res.sendStatus(204);
 });
 
 app.listen(8080);
