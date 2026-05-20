@@ -1,0 +1,7 @@
+npm install express ws
+
+pm2 start server.js --watch
+
+// open http://localhost:8080 in two tabs — clicks sync instantly
+// kill the server, click a few times, restart server:
+//   the queued clicks flush on reconnect (server count resets to 0 since no persistence)
