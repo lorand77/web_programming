@@ -1,25 +1,21 @@
 const express = require('express');
+
 const app = express();
+app.listen(8080);
+app.use(express.static(__dirname));
 
 let count = 0;
 
-app.use(express.static(__dirname));
-
 app.get('/count', (req, res) => {
-    res.json({ count });
-    console.log('Count requested:', count);
+    res.send(String(count));
 });
 
 app.post('/plus', (req, res) => {
     count++;
-    res.json({ count: count });
-    console.log('Count increased:', count);
+    res.send(String(count));
 });
 
 app.post('/minus', (req, res) => {
     count--;
-    res.json({ count: count });
-    console.log('Count decreased:', count);
+    res.send(String(count));
 });
-
-app.listen(8080);

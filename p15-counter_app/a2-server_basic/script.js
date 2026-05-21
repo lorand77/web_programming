@@ -1,18 +1,15 @@
 const counter = document.getElementById('counter');
 
-function render(data) {
-  counter.textContent = data.count;
-}
-
-function send(path) {
-  fetch(path, { method: 'POST' })
-    .then(function (r) { return r.json(); })
-    .then(render);
-}
-
 fetch('/count')
-  .then(function (r) { return r.json(); })
-  .then(render);
+  .then(r => r.text())
+  .then(c => { counter.textContent = c; });
+
+
+function send(action) {
+  fetch(action, { method: 'POST' })
+    .then(r => r.text())
+    .then(c => { counter.textContent = c; });
+}
 
 document.getElementById('plus').addEventListener('click', function () {
   send('/plus');
