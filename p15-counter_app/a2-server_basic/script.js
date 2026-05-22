@@ -1,20 +1,17 @@
 const counter = document.getElementById('counter');
 
-fetch('/count')
-  .then(r => r.text())
-  .then(c => { counter.textContent = c; });
-
-
-function send(action) {
-  fetch(action, { method: 'POST' })
+function send(path, method) {
+  fetch(path, { method })
     .then(r => r.text())
     .then(c => { counter.textContent = c; });
 }
 
-document.getElementById('plus').addEventListener('click', function () {
-  send('/plus');
-});
+send('/count', 'GET');
+document.getElementById('plus').addEventListener('click', () => { send('/plus', 'POST'); });
+document.getElementById('minus').addEventListener('click', () => { send('/minus', 'POST'); });
 
-document.getElementById('minus').addEventListener('click', function () {
-  send('/minus');
-});
+// ['plus', 'minus'].forEach(id => {
+//   document.getElementById(id).addEventListener('click', () => {
+//     send(`/${id}`, 'POST');
+//   });
+// });
