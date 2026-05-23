@@ -12,6 +12,7 @@ app.use((req, res, next) => {
     if (!uid) {
         uid = crypto.randomUUID();
         res.setHeader('Set-Cookie', `uid=${uid}`);
+        // counts[uid] = 0;
     }
     req.uid = uid;
     if (!(uid in counts)) counts[uid] = 0;
@@ -19,15 +20,15 @@ app.use((req, res, next) => {
 });
 
 app.get('/count', (req, res) => {
-    res.send(String(counts[req.uid]));
+    res.send(counts[req.uid]);
 });
 
 app.post('/plus', (req, res) => {
     counts[req.uid]++;
-    res.send(String(counts[req.uid]));
+    res.send(counts[req.uid]);
 });
 
 app.post('/minus', (req, res) => {
     counts[req.uid]--;
-    res.send(String(counts[req.uid]));
+    res.send(counts[req.uid]);
 });
