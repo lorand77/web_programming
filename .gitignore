@@ -65,6 +65,8 @@ eslint.config.mjs
 package-lock.json
 package.json
 !p10-npm/package.json
+!p15-counter_app/a7-database/package.json
+!p15-counter_app/a7-database/package-lock.json
 
 
 *.pem
