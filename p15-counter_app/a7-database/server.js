@@ -25,42 +25,26 @@ conn.query(`
 });
 
 app.use((req, res, next) => {
-    let uid = (req.headers.cookie || '').match(/uid=([^;]+)/)?.[1];
-    if (!uid) {
-        uid = crypto.randomUUID();
-        res.setHeader('Set-Cookie', `uid=${uid}`);
+    req.uid = (req.headers.cookie || '').match(/uid=([^;]+)/)?.[1];
+    if (!req.uid) {
+        req.uid = crypto.randomUUID();
+        res.setHeader('Set-Cookie', `uid=${req.uid}`);
     }
-    req.uid = uid;
-    conn.query('INSERT IGNORE INTO counters (uid) VALUES (?)', [uid], (err) => {
-        if (err) return next(err);
-        next();
-    });
+    conn.query('INSERT IGNORE INTO counters (uid) VALUES (?)', [req.uid], next);
 });
 
-function sendCount(req, res, next) {
-    conn.query('SELECT count FROM counters WHERE uid = ?', [req.uid], (err, rows) => {
-        if (err) return next(err);
-        res.send(String(rows[0].count));
-    });
+function show(req, res) {
+    conn.query('SELECT count FROM counters WHERE uid = ?', [req.uid],
+        (err, rows) => res.send(rows[0].count));
 }
 
-app.get('/count', sendCount);
+function change(delta) {
+    return (req, res) => {
+        conn.query('UPDATE counters SET count = count + ? WHERE uid = ?',
+            [delta, req.uid], () => show(req, res));
+    };
+}
 
-app.post('/plus', (req, res, next) => {
-    conn.query('UPDATE counters SET count = count + 1 WHERE uid = ?', [req.uid], (err) => {
-        if (err) return next(err);
-        sendCount(req, res, next);
-    });
-});
-
-app.post('/minus', (req, res, next) => {
-    conn.query('UPDATE counters SET count = count - 1 WHERE uid = ?', [req.uid], (err) => {
-        if (err) return next(err);
-        sendCount(req, res, next);
-    });
-});
-
-app.use((err, req, res, next) => {
-    console.error(err);
-    res.status(500).send('Server error');
-});
+app.get('/count', show);
+app.post('/plus', change(1));
+app.post('/minus', change(-1));
